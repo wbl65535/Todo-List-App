@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}编辑事项{% endblock %}
+{% block header %}编辑事项{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <form action="{{ url_for('save', id=todo.id) }}" method="POST">
+            <div class="mb-3">
+                <label for="title" class="form-label">标题 *</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ todo.title }}" placeholder="请输入待办事项标题" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">描述</label>
+                <textarea class="form-control" id="description" name="description" rows="3" placeholder="可选的详细描述">{{ todo.description }}</textarea>
+            </div>
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">取消</a>
+                <button type="submit" class="btn btn-primary">保存更改</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

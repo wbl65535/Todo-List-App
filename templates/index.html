@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- 添加待办事项表单 -->
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">添加新事项</h5>
+        <form action="{{ url_for('add') }}" method="POST">
+            <div class="mb-3">
+                <label for="title" class="form-label">标题 *</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="请输入待办事项标题" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">描述</label>
+                <textarea class="form-control" id="description" name="description" rows="2" placeholder="可选的详细描述"></textarea>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">添加事项</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- 待办事项列表 -->
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title d-flex justify-content-between align-items-center">
+            <span>我的待办事项</span>
+            <span class="badge bg-secondary">{{ todos|length }}</span>
+        </h5>
+        
+        {% if todos %}
+            <ul class="list-group">
+                {% for todo in todos %}
+                <li class="list-group-item todo-item {% if todo.completed %}completed{% endif %}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">{{ todo.title }}</h6>
+                            {% if todo.description %}
+                            <p class="mb-1 text-muted">{{ todo.description }}</p>
+                            {% endif %}
+                            <small class="text-muted">{{ todo.created_date.strftime('%Y-%m-%d %H:%M') }}</small>
+                        </div>
+                        <div class="btn-group-vertical ms-2" role="group">
+                            <!-- 完成/未完成按钮 -->
+                            <a href="{{ url_for('update', id=todo.id) }}" 
+                               class="btn btn-sm {% if todo.completed %}btn-outline-success{% else %}btn-success{% endif %}">
+                                {% if todo.completed %}✓{% else %}○{% endif %}
+                            </a>
+                            
+                            <!-- 编辑按钮 -->
+                            <a href="{{ url_for('edit', id=todo.id) }}" class="btn btn-sm btn-outline-primary">编辑</a>
+                            
+                            <!-- 删除按钮 -->
+                            <a href="{{ url_for('delete', id=todo.id) }}" 
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('确定要删除这个事项吗？\n\n{{ todo.title }}')">删除</a>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="empty-state">
+                <div class="text-muted">暂无待办事项</div>
+                <div class="text-muted small mt-2">添加您的第一个任务开始使用吧！</div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
