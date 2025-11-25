@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -5,8 +6,14 @@ from datetime import datetime
 # 创建Flask应用实例
 app = Flask(__name__)
 
-# 配置数据库
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
+# 配置数据库 - 适配不同环境
+if os.environ.get('VERCEL'):
+    # Vercel环境使用内存数据库（仅作演示，实际部署需要外部数据库）
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+else:
+    # 本地开发环境
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
+    
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # 初始化数据库

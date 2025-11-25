@@ -78,6 +78,14 @@ Todo-List-App/
 
 ## 部署到生产环境
 
+### Vercel 部署（注意限制）
+该项目包含 `vercel.json` 配置文件，可用于部署到 Vercel。但需要注意以下限制：
+- Vercel 的 serverless 环境对文件系统访问有限制
+- SQLite 数据库无法在 Vercel 上持久化存储
+
+请参考 [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md) 文件了解详细信息和解决方案。
+
+### 其他部署选项
 请参考 [DEPLOYMENT.md](DEPLOYMENT.md) 文件了解更多部署选项。
 
 ## 贡献
